@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org/layout" th:inline="text">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <header class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="brand" th:href="@{/}">Coffee, Inc.</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="well sidebar-nav span3">
+    <ul class="nav nav-list">
+      <li class="nav-header">Order History</li>
+      <li>
+        <a th:href="@{/order/history}">HTML</a>
+      </li>
+      <li>
+        <a th:href="@{/order/history/pdf}">PDF</a>
+      </li>
+      <li>
+        <a th:href="@{/order/history/excel}">Excel</a>
+      </li>
+      <li>&nbsp;</li>
+      <li class="nav-header">Order Summary</li>
+      <li>
+        <a th:href="@{/order/summary}">HTML</a>
+      </li>
+      <li>
+        <a th:href="@{/order/summary/pdf}">PDF</a>
+      </li>
+      <li>
+        <a th:href="@{/order/summary/excel}">Excel</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="container-fluid" layout:fragment="content"></div>
+
+  <footer> Copyright 2013-[[${#dates.format(#dates.createToday(), "yyyy")}]] Coffee Inc. All rights reserved </footer>
+</body>
+</html>

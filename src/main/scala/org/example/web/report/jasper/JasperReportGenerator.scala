@@ -1,0 +1,146 @@
+package org.example.web.report.jasper
+
+import java.io.OutputStream
+import java.util.Collection
+import java.util.HashMap
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import net.sf.jasperreports.engine.JRExporter
+import net.sf.jasperreports.engine.JRExporterParameter
+import net.sf.jasperreports.engine.JasperCompileManager
+import net.sf.jasperreports.engine.JasperFillManager
+import net.sf.jasperreports.engine.JasperPrint
+import net.sf.jasperreports.engine.JasperReport
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import net.sf.jasperreports.engine.export.JRHtmlExporter
+import net.sf.jasperreports.engine.export.JRHtmlExporterParameter
+import net.sf.jasperreports.engine.export.JRPdfExporter
+import net.sf.jasperreports.engine.export.JRXlsExporter
+import net.sf.jasperreports.j2ee.servlets.BaseHttpServlet
+
+object JasperReportGenerator {
+  /**
+   * Generates an Excel report using a specified report template and a
+   * bean-collection data source for the report.
+   *
+   * @param reportPath Path to the JRXML file to use for generating the
+   * report.
+   * @param dataSource A {@link Collection} of objects to use as the
+   * data source for the report.
+   * @param response The {@link HttpServletResponse} to which the report
+   * should be written.
+   */
+  def generateExcel(reportPath: String, dataSource: Collection[_], response: HttpServletResponse) {
+    this.generate(reportPath, dataSource, new JRXlsExporter, None, response, Some("application/vnd.ms-excel"))
+  }
+
+  /**
+   * Generates an HTML report using a specified report template and a
+   * bean-collection data source for the report.
+   *
+   * @param reportPath Path to the JRXML file to use for generating the
+   * report.
+   * @param dataSource A {@link Collection} of objects to use as the
+   * data source for the report.
+   * @param request The current {@link HttpServletRequest}.
+   * @param response The {@link HttpServletResponse} to which the report
+   * should be written.
+   */
+  def generateHTML(reportPath: String, dataSource: Collection[_], request: HttpServletRequest, response: HttpServletResponse) {
+    this.generate(reportPath, dataSource, new JRHtmlExporter, Some(request), response)
+  }
+
+  /**
+   * Generates a PDF report using a specified report template and a
+   * bean-collection data source for the report.
+   *
+   * @param reportPath Path to the JRXML file to use for generating the
+   * report.
+   * @param dataSource A {@link Collection} of objects to use as the
+   * data source for the report.
+   * @param response The {@link HttpServletResponse} to which the report
+   * should be written.
+   */
+  def generatePDF(reportPath: String, dataSource: Collection[_], response: HttpServletResponse) {
+    this.generate(reportPath, dataSource, new JRPdfExporter, None, response, Some("application/pdf"))
+  }
+
+  /**
+   * Generates a compiled report using a specified report template and a
+   * collection data source for the report.
+   *
+   * @param reportPath Path to the JRXML file to use for generating the
+   * report.
+   * @param dataSource A {@link Collection} of objects to use as the
+   * data source for the report.
+   * @param exporter A {@link JRExporter} to use to generate the report.
+   * @param request The current {@link HttpServletRequest}.
+   * @param response The {@link HttpServletResponse} to which the report
+   * should be written.
+   * @param contentType The HTTP response content type for the report.
+   */
+  private def generate(reportPath: String, dataSource: Collection[_], exporter: JRExporter, request: Option[HttpServletRequest], response: HttpServletResponse, contentType: Option[String] = None) {
+    val output = response.getOutputStream
+
+    try {
+      this.prepare(this.print(JasperCompileManager.compileReport(this.load(reportPath)), dataSource), exporter, request, output)
+
+      exporter.exportReport()
+
+      contentType match {
+        case Some(s) => response.setContentType(s)
+        case _ =>
+      }
+
+      output.flush()
+    } finally {
+      output.close()
+    }
+  }
+
+  /**
+   * Loads a JRXML report template.
+   *
+   * @param reportPath Path to the JRXML file to load.
+   * @return An {@link InputStream} that can be used to read the JRXML
+   * report template.
+   */
+  private def load(reportPath: String) = this.getClass.getClassLoader.getResourceAsStream(reportPath)
+
+  /**
+   * Prepares to generate a report.
+   *
+   * @param print The report to prepare
+   * @param exporter The exporter to use.
+   * @param request The current {@link HttpServletRequest}.
+   * @param output The {@link OutputStream} to which the report must be written.
+   */
+  private def prepare(print: JasperPrint, exporter: JRExporter, request: Option[HttpServletRequest], output: OutputStream) {
+    request match {
+      case Some(request) =>
+        // Add the compiled report to the HTTP Session because any graphics
+        // embedded in the report are generated by a Servlet that is invoked
+        // after the web page has been rendered.
+        request.getSession.setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print)
+
+      case None =>
+    }
+
+    exporter.setParameter(JRExporterParameter.JASPER_PRINT, print)
+    exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, output)
+    exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, "/report/graphics?image=")
+    exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, false)
+
+    exporter.exportReport()
+  }
+
+  /**
+   * Merges a compiled report with data.
+   *
+   * @param report The compiled report to merge.
+   * @param dataSource A {@link Collection} of objects to merge.
+   * @return A {@link JasperPrint}.
+   */
+  private def print(report: JasperReport, dataSource: Collection[_]) = JasperFillManager.fillReport(report, new HashMap[String, Object], new JRBeanCollectionDataSource(dataSource))
+}

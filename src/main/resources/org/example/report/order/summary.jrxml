@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Coffee" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="29cf3538-f28b-4bfc-9073-92b52405966b">
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<field name="month" class="java.lang.String"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<title>
+		<band height="354" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="170" y="0" width="263" height="62" uuid="601cafee-f9d6-4d19-9a86-532c3698c991"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Coffee Inc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="219" y="62" width="196" height="22" uuid="fc723665-5852-4207-905e-3b80460b873f"/>
+				<textElement>
+					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Order Summary, 2014]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="94" width="383" height="56" uuid="9db81da8-82bb-496c-bd89-deab638458c0"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[
+            Coffee Inc.
+            2019 Pennsylvania Avenue
+            Brooklyn NY 11207
+            ]]></text>
+			</staticText>
+			<pie3DChart>
+				<chart isShowLegend="true" evaluationTime="Report">
+					<reportElement x="1" y="154" width="554" height="200" uuid="0f53c4c3-d5bc-4880-93c2-d88bc378f367"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Monthly Sales"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{month}]]></keyExpression>
+					<valueExpression><![CDATA[$F{total}]]></valueExpression>
+				</pieDataset>
+				<pie3DPlot labelFormat="${1}">
+					<plot foregroundAlpha="0.5">
+						<seriesColor seriesOrder="1" color="#FF3300"/>
+						<seriesColor seriesOrder="2" color="#3300FF"/>
+						<seriesColor seriesOrder="3" color="#00FF33"/>
+					</plot>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="d3fef329-1136-4659-9091-21f7e7af990c"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343" uuid="635984cf-e26b-441b-a5c9-c033cda22c65"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343" uuid="11eec0ac-53c7-435b-9583-17c3291d2a8e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="9f2e9e8d-262c-4550-87b6-eaa682cf63b6"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>
