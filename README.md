@@ -125,7 +125,31 @@ This part of the configuration maps the URL `/report/graphics` to the servlet
 adding charts and graphics to HTML reports.  Internally, it uses the data passed to
 a report to generate images for the charts embedded inside an HTML report.
 
-# 6. Alternate integration options
+# 6. Modifying the source code
+The source code can be modified using any popular Java IDE, such as, Eclipse, IDEA or
+Netbeans.
+
+# 7. License
+This sample application and its associated source code in its entirety is being made
+available under the following licensing terms.
+
+    Copyright (C) 2014
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of
+	this software and associated documentation files (the "Software"), to deal in the
+	Software without restriction, including without limitation the rights to use, copy,
+	modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so, subject to the
+	following conditions:
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+	PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+	HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+	CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+	OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# 8. Alternate integration options
 The current Jasper Reports documentation available online suggests generating charts
 and graphics using a third-party library such as JFreeChart and embedding the generated
 image directly into a Jasper Report.  Although this approach works, it adds development
