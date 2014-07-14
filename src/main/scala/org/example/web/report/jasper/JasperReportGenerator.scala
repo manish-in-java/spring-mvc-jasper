@@ -131,8 +131,6 @@ object JasperReportGenerator {
     exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, output)
     exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, "/report/graphics?image=")
     exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, false)
-
-    exporter.exportReport()
   }
 
   /**
