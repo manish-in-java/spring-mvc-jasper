@@ -1,24 +1,28 @@
 # 1. Introduction
 With advancements in HTML, CSS, JavaScript, web browser capabilities and Internet speeds,
-more and more enterprise functionality is being migrated to the web.  This has led to more
-and more data being available to users over the web and therefore increased demans for
-rich reporting capabilities in web applications.
+more and more enterprise functionality is being migrated to the web.  This has led to an increase
+in the amount of data being made available to enterprise users over the web and therefore an
+increased demand for rich reporting capabilities in web applications.
 
 [Spring MVC](http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#spring-web)
 is a popular Java framework for building web applications.  It runs well across Java application
 servers and provides tight integration with loads of popular Java tools such as source code
-editors (Eclipse, IDEA, Netbeans), build managers (Maven, ANT, Ivy, Gradle).  It also usually
-works well with most languages that work on the JVM (for example, Scala and Groovy), making
-it popular for developing web applications on the JVM.
+editors (Eclipse, IDEA, Netbeans) and build managers (Maven, ANT, Ivy, Gradle).  It also usually works well
+with most languages that work on the JVM (for example, Scala and Groovy), making it popular for developing web applications on the JVM.
 
 [Jasper Reports](http://community.jaspersoft.com/) is a Java based reporting library boasting
 of a fairly comprehensive set of reporting features, a visual report design tool, a
 flexible report generation framework, support for multiple report formats such as *HTML*, *XHTML*,
 *PDF*, *Microsoft Excel 97 (.xls)*, *Microsoft Excel 2000 (.xlsx)*, *CSV*,*Rich Text*,
-*Open Data Format (.odf)* and more.
+*Open Data Format (.odf)* and more.  The great thing about Jasper Reports is that reports designed
+using the visual editor looks exactly the same in all formats.  This allows developers to produce
+develop-once, deliver-anywhere reports that different types of users can work with on different
+devices.
 
 This sample application demonstrates one possible way of adding Jasper Reports to a Spring MVC
-application.  For other integration possibilities see the last section below.
+application.  The primary goal of this sample is to demonstrate how Jasper Reports can be integrated
+in a Spring-MVC application that has multiple logical layers for maintainability and scalability.
+For other integration possibilities see the last section below.
 
 # 2. Overview
 This sample application contains two types of reports:
@@ -50,7 +54,7 @@ This report shows a summary of all orders received by Coffee Inc., grouped by mo
 For every month, it shows the total amount received by Coffee Inc.
 
 # 3. Running the application
-The following pre-requisites are required to run this application:
+The following pre-requisites need to be met in order to run this application:
 
 1. JDK 6.0+
 2. Apache Maven 3.0.4+
@@ -69,7 +73,7 @@ Each report can be accessed in *HTML*, *PDF* and *Microsoft Excel '97* formats.
 
 # 4. Report files
 The report designs can be found in files under the folder
-`src/main/resources/org/example/report/order/history.jrxml`.
+`src/main/resources/org/example/report/order`.
 
 # 5. Explanation of the code
 This application uses *Scala*, a programming language that runs on the JVM.  Scala
@@ -104,7 +108,11 @@ report template.  This strategy allows the reports to be completely decoupled fr
 the source of the data used to generate them.  Data can be pulled out of a relational
 database, local files, external systems, email systems, and so on and be passed on to
 the reports in a consistent and reliable way, without the reports having to manage
-the connectivity with the data source(s).
+the connectivity with the data source(s).  Not allowing Jasper Reports direct access
+to the underlying data stores also adds to the security of the application as any bug
+in Jasper Reports, malformed user requests or hacking attempts cannot expose the data
+stores directly.  Further, since the requests for reports go through multiple application
+layers, security hazards such as *SQL Injection* can be prevented easily.
 
 There is also a small bit of configuration in the `web.xml` file for the application:
 
@@ -157,4 +165,4 @@ complexity as developers need to learn a framework such as JFreeChart in additio
 learning Jasper Reports.  Additionally, for every chart or graphic to be included in
 reports, the developers would have to write code.  All of this would add significant
 development overhead, making this option less practical than the one used in this
-sample application, which involves generating graphics using a servlet.
+sample application, which involves generating graphics using a simple servlet.
