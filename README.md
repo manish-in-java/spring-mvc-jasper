@@ -58,7 +58,7 @@ The following pre-requisites are required to run this application:
 Once these are installed and the application code has been checked out or downloaded
 from Git, the application can be run by issuing the following command:
 
-    mvn clean package tomcat7:run
+    mvn clean tomcat7:run -Ptomcat
 
 This will compile the application (after downloading all necessary libraries) and run
 an embedded Tomcat instance on port 8080.  The application can then be accessed on
@@ -66,6 +66,10 @@ an embedded Tomcat instance on port 8080.  The application can then be accessed 
 
 The reports can be accessed from the navigation menu on the left-hand-side of the page.
 Each report can be accessed in *HTML*, *PDF* and *Microsoft Excel '97* formats.
+
+The application also be run against an embedded Jetty instance as well as:
+
+    mvn clean jetty:run -Pjetty
 
 # 4. Report files
 The report designs can be found in files under the folder
